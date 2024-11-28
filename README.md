@@ -9,6 +9,8 @@ This is still an ongoing project. I plan to add more types of enemies, and possi
 The game uses a game loop to update all of its components, and properly deallocates memory (well, at least it should ;D)
 Run 'make' to compile the program. If you are on Windows, change the .EXE in the Makefile to = "game.exe". Then run "./game" or "./game.exe"!
 
+The window size should be 100 x 50.
+
 
 <img width="857" alt="Game Screenshot 1" src="https://github.com/user-attachments/assets/0f955a63-ccc9-4987-b792-545b1fbc8fe0">
 
