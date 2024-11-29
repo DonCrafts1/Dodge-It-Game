@@ -163,8 +163,6 @@ void display_main_menu(WINDOW* window, const bool& test_mode) {
     mvwaddstr(window, MAX_Y/2 - 1, MAX_X/2 - made_by_text.length() / 2, made_by_text.c_str());
     mvwaddstr(window, MAX_Y/2 + 2, MAX_X/2 - difficulty_text.length() / 2, difficulty_text.c_str());
     mvwaddstr(window, MAX_Y/2 + 5, MAX_X/2 - exit_text.length() / 2, exit_text.c_str());
-    
-    wrefresh(window);
 }
 
 void display_ready_screen(WINDOW* window, const Difficulty& difficulty) {
@@ -177,8 +175,6 @@ void display_ready_screen(WINDOW* window, const Difficulty& difficulty) {
     mvwaddstr(window, MAX_Y/2, MAX_X/2 - difficulty_text.length() / 2, difficulty_text.c_str());
 
     mvwaddstr(window, MAX_Y/2 + 5, MAX_X/2 - proceed_option_text.length() / 2, proceed_option_text.c_str());
-
-    wrefresh(window);
 }
 
 void display_end_results(WINDOW* window, const GameResults& results) {
@@ -194,8 +190,6 @@ void display_end_results(WINDOW* window, const GameResults& results) {
     stringstream ss; ss << results.difficulty;
     data_str += ss.str() + ". Lives remaining: " + to_string(results.lives_remaining);
     mvwaddstr(window, MAX_Y/2, MAX_X/2 - data_str.length()/2, data_str.c_str());
-
-    wrefresh(window);
 }
 
 void display_game_stage(WINDOW* window, const GameStage& stage) {
@@ -213,7 +207,7 @@ void display_game_stage(WINDOW* window, const GameStage& stage) {
             break;
     }
     
-    wrefresh(window);
+    // wrefresh(window);
 }
 
 // Found on the internet :)
@@ -274,9 +268,10 @@ int main(int argc, char* argv[]) {
                 bool selected = false;
                 while (!selected) {
                     werase(play_win);
-                    display_main_menu(play_win, test_mode);
                     selected = process_menu_input(play_win, difficulty);
                     display_game_stage(play_win, game_stage);
+                    display_main_menu(play_win, test_mode);
+                    wrefresh(play_win);
                     this_thread::sleep_for(chrono::microseconds((long)FRAME_TIME));
                 }
                 game_stage = GameStage::Ready;
@@ -290,6 +285,7 @@ int main(int argc, char* argv[]) {
                     display_ready_screen(play_win, difficulty);
                     selected = process_ready_input(play_win, proceed);
                     display_game_stage(play_win, game_stage);
+                    wrefresh(play_win);
                     this_thread::sleep_for(chrono::microseconds((long)FRAME_TIME));
                 }
                 if (proceed) {
@@ -321,7 +317,7 @@ int main(int argc, char* argv[]) {
                     if (!paused) {
                         game_over = update(elapsed);
                         render(play_win);
-                        display_game_stage(play_win, game_stage);
+                        // display_game_stage(play_win, game_stage);
                     } else {
                         mvwaddstr(play_win, MAX_Y / 2 - 1, MAX_X / 2 - paused_str.length() / 2, paused_str.c_str());
                         mvwaddstr(play_win, MAX_Y / 2 + 1, MAX_X / 2 - paused_instruction_str.length() / 2, paused_instruction_str.c_str());
