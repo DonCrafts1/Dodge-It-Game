@@ -1,12 +1,21 @@
 #include <iostream>
 #include <chrono>
 #include <thread>
-#include <ncurses.h>
 #include <cstring>
 #include <sstream>
-#include <execinfo.h>
+
 #include <signal.h>
 #include <unistd.h>
+
+#ifdef _WIN32
+#include <ncurses/ncurses.h>
+#elif TARGET_OS_MAC || __linux__
+#include "ncurses.h"
+#include <execinfo.h>
+#else
+# error "Unknown compiler"
+#endif
+
 #include "game_space.h"
 #include "game_text.h"
 
@@ -144,17 +153,6 @@ void render(WINDOW* window) {
     game_space.print(window);
 }
 
-// int main() {
-//     initscr();
-//     printw("Hello!");
-//     refresh();
-//     char c = getch();
-//     addch(c);
-
-//     getch();
-//     endwin();
-// }
-
 void display_main_menu(WINDOW* window, const bool& test_mode) {
     box(window, 0, 0);
     if (test_mode) {
@@ -222,21 +220,25 @@ void display_game_stage(WINDOW* window, const GameStage& stage) {
 void handler(int sig) {
     clear();
     endwin();
-    void *array[10];
-    size_t size;
 
-    // get void*'s for all entries on the stack
-    size = backtrace(array, 10);
+    #ifdef TARGET_OS_MAC || __linux__
+        void *array[10];
+        size_t size;
 
-    // print out all the frames to stderr
-    fprintf(stderr, "Error: signal %d:\n", sig);
-    backtrace_symbols_fd(array, size, STDERR_FILENO);
+        // get void*'s for all entries on the stack
+        size = backtrace(array, 10);
+
+        // print out all the frames to stderr
+        fprintf(stderr, "Error: signal %d:\n", sig);
+        backtrace_symbols_fd(array, size, STDERR_FILENO);
+    #endif
+
     exit(1);
 }
 
 int main(int argc, char* argv[]) {
     signal(SIGSEGV, handler);
-    signal(SIGBUS, handler);
+    signal(10, handler); // SIGBUS
     srand(time(0));
     
     initscr();              // Start curses mode
@@ -246,6 +248,8 @@ int main(int argc, char* argv[]) {
     // keypad(stdscr, TRUE);
     // int yMax, xMax;
     // getmaxyx(stdscr, yMax, xMax);
+
+    resize_term(MAX_Y, MAX_X);
 
     WINDOW* play_win = newwin(MAX_Y, MAX_X, 0, 0);
     nodelay(play_win, FALSE);  // Non-blocking input

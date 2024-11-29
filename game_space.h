@@ -1,6 +1,14 @@
 #pragma once
 #include <iostream>
-#include <ncurses.h>
+
+#ifdef _WIN32
+#include <ncurses/ncurses.h>
+#elif TARGET_OS_MAC || __linux__
+#include "ncurses.h"
+#else
+# error "Unknown compiler"
+#endif
+
 #include <set>
 #include <list>
 #include "spawn_object.h"
