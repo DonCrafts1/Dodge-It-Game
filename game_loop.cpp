@@ -9,11 +9,11 @@
 
 #ifdef _WIN32
 #include <ncurses/ncurses.h>
-#elif TARGET_OS_MAC || __linux__
+#elif defined(__APPLE__) || defined(LINUX)
 #include "ncurses.h"
 #include <execinfo.h>
 #else
-# error "Unknown compiler"
+#error "Unknown compiler"
 #endif
 
 #include "game_space.h"
@@ -221,7 +221,7 @@ void handler(int sig) {
     clear();
     endwin();
 
-    #ifdef TARGET_OS_MAC || __linux__
+    #if defined(__APPLE__) || defined(LINUX)
         void *array[10];
         size_t size;
 
@@ -248,8 +248,9 @@ int main(int argc, char* argv[]) {
     // keypad(stdscr, TRUE);
     // int yMax, xMax;
     // getmaxyx(stdscr, yMax, xMax);
-
+    #ifdef _WIN32
     resize_term(MAX_Y, MAX_X);
+    #endif
 
     WINDOW* play_win = newwin(MAX_Y, MAX_X, 0, 0);
     nodelay(play_win, FALSE);  // Non-blocking input

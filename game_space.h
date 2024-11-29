@@ -3,7 +3,7 @@
 
 #ifdef _WIN32
 #include <ncurses/ncurses.h>
-#elif TARGET_OS_MAC || __linux__
+#elif __APPLE__ || defined(LINUX)
 #include "ncurses.h"
 #else
 # error "Unknown compiler"
