@@ -7,7 +7,11 @@ _Project Details_
 
 This is still an ongoing project. I plan to add more types of enemies, and possibly an attack system.
 The game uses a game loop to update all of its components, and properly deallocates memory (well, at least it should ;D)
-Run 'make' to compile the program. If you are on Windows, change the .EXE in the Makefile to = "game.exe". Then run "./game" or "./game.exe"!
+
+Be sure to have installed ncurses on your machine. If you are on Mac/Linux it should be installed already. If you're on Windows, you may need to install ncurses.
+If you are using mingw64, take a look at this for installation: https://packages.msys2.org/packages/mingw-w64-ucrt-x86_64-ncurses
+
+Run 'make' to compile the program. Then run "./game" or "./game.exe"!
 
 The window size should be 100 x 50.
 
