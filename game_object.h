@@ -21,7 +21,6 @@ class GameObject {
         int size_x, size_y, mass;
         bool deletable = false;
         char representing_char;
-        GameSpace* game_space;
         Position position;
         Pattern pattern;
         HitBox hitbox;
@@ -33,7 +32,7 @@ class GameObject {
         void update_hitbox();
         void update_velocity_from_collisions(long frameTime);
     public:
-        GameObject(GameSpace* game_space, Position position = Position(0,0), int size_x = 1, int size_y = 1, Pattern pattern = Pattern::Cross, Vector2 velocity = Vector2(0, 0));
+        GameObject(Position position = Position(0,0), int size_x = 1, int size_y = 1, Pattern pattern = Pattern::Cross, Vector2 velocity = Vector2(0, 0));
         virtual ~GameObject() = default;
 
         // Returns char that represents the GameObject type.

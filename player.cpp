@@ -1,6 +1,6 @@
 #include "player.h"
 
-Player::Player(GameSpace* game_space, bool test_mode) : GameObject(game_space, Position(50, 35), 2, 2, Pattern::Cross), health(4), hit_immunity_timer(1500000) {
+Player::Player(bool test_mode) : GameObject(Position(50, 35), 2, 2, Pattern::Cross), health(4), hit_immunity_timer(1500000) {
     mass = 4;
     if (test_mode) {
         health = 9999;

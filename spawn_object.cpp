@@ -2,13 +2,13 @@
 
 // SpawnObject::SpawnObject() {}
 
-SpawnObject::SpawnObject(GameSpace* game_space, Position position, int size_x, int size_y, Pattern pattern, Vector2 velocity)
- : GameObject(game_space, position, size_x, size_y, pattern, velocity) {
+SpawnObject::SpawnObject(Position position, int size_x, int size_y, Pattern pattern, Vector2 velocity)
+ : GameObject(position, size_x, size_y, pattern, velocity) {
     
 }
 
-AcceleratingObject::AcceleratingObject(GameSpace* game_space, Position position, int size_x, int size_y, bool affected_by_gravity, Vector2 acceleration, Vector2 velocity) 
-    : SpawnObject(game_space, position, size_x, size_y, Pattern::Square, velocity), affected_by_gravity(affected_by_gravity), acceleration(acceleration)
+AcceleratingObject::AcceleratingObject(Position position, int size_x, int size_y, bool affected_by_gravity, Vector2 acceleration, Vector2 velocity) 
+    : SpawnObject(position, size_x, size_y, Pattern::Square, velocity), affected_by_gravity(affected_by_gravity), acceleration(acceleration)
 {
     representing_char = 'v';
 }

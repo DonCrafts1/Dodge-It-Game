@@ -16,7 +16,7 @@ class Player : public GameObject {
         bool immune = false;
         ActionTimer hit_immunity_timer;
     public:
-        Player(GameSpace* game_space, bool test_mode);
+        Player(bool test_mode);
         void move(const std::vector<Direction> &directions);
         void move(Direction direction);
         void attack(Direction direction);

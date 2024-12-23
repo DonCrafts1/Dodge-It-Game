@@ -23,7 +23,7 @@ using namespace std;
 
 constexpr int FRAME_RATE = 60;
 constexpr double FRAME_TIME = 1000000.0/FRAME_RATE; // in microseconds
-GameSpace game_space;
+GameSpace* game_space = GameSpace::get_instance();
 
 // Gets current time in milliseconds
 long long get_current_time() {
@@ -53,7 +53,7 @@ void process_input(WINDOW* window, bool& paused) {
         key_pressed = wgetch(window);
     }
     vector<Direction> input_directions;
-    Player* player = game_space.get_player();
+    Player* player = game_space->get_player();
     
     // Check if the key pressed was a special key, such as an wasd key
     for (char key : keys_pressed) {
@@ -73,7 +73,7 @@ void process_input(WINDOW* window, bool& paused) {
                     input_directions.push_back(Direction::Up);
                     break; 
                 case 't':
-                    game_space.spawn_falling_obj_random();
+                    game_space->spawn_falling_obj_random();
                     break;
             }
         }
@@ -143,14 +143,14 @@ bool process_ready_input(WINDOW* window, bool& proceed) {
 
 // If game over (player dies, or some other objective), returns true 
 bool update(const long& frame_time) {
-    return game_space.update(frame_time);
+    return game_space->update(frame_time);
 }
 
 void render(WINDOW* window) {
     // cout << "Hi!" << endl;
     wclear(window);
     box(window, 0, 0);
-    game_space.print(window);
+    game_space->print(window);
 }
 
 void display_main_menu(WINDOW* window, const bool& test_mode) {
@@ -296,7 +296,7 @@ int main(int argc, char* argv[]) {
                 break;
             }
             case GameStage::Game: {
-                game_space.reset(difficulty, test_mode);
+                game_space->reset(difficulty, test_mode);
                 bool paused = false;
                 nodelay(play_win, FALSE);
                 
@@ -347,7 +347,7 @@ int main(int argc, char* argv[]) {
                 break;
             }
             case GameStage::End: {
-                display_end_results(play_win, game_space.get_game_results());
+                display_end_results(play_win, game_space->get_game_results());
                 
                 mvwaddstr(play_win, MAX_Y/2 + 5, MAX_X/2 - end_message.length() / 2, end_message.c_str());
                 display_game_stage(play_win, game_stage);

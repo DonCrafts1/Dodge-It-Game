@@ -33,8 +33,8 @@ void GameObject::update_velocity_from_collisions(long frameTime)
 
 }
 
-GameObject::GameObject(GameSpace* game_space, Position position, int size_x, int size_y, Pattern pattern, Vector2 velocity) 
-    : game_space(game_space), position(position), pattern(pattern), hitbox(this), velocity(velocity)
+GameObject::GameObject(Position position, int size_x, int size_y, Pattern pattern, Vector2 velocity) 
+    : position(position), pattern(pattern), hitbox(this), velocity(velocity)
 {
     this->size_x = get_fixed_size(size_x, pattern);
     this->size_y = get_fixed_size(size_y, pattern);

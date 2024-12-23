@@ -1,6 +1,6 @@
 #include "game_space.h"
 
-GameSpace::GameSpace(Difficulty difficulty, bool test_mode) : difficulty(difficulty), player(new Player(this, test_mode)), entities(), game_timer(static_cast<long>(difficulty) * MILLION), test_mode(test_mode)
+GameSpace::GameSpace(Difficulty difficulty, bool test_mode) : difficulty(difficulty), player(new Player(test_mode)), entities(), game_timer(static_cast<long>(difficulty) * MILLION), test_mode(test_mode)
 {
     entities.push_front(player);
 }
@@ -106,13 +106,15 @@ void GameSpace::spawn_falling_obj_random()
     double accelerationY = 0; // 9.81 * ((rand() / (double(RAND_MAX)) - 0.5) * static_cast<double>(difficulty) / static_cast<double>(Difficulty::Easy));
     double accelerationX = rand() % 2 == 1 ? -rand() % 10 / 10.0 : rand() % 10 / 10.0;
     double velocityY = 4 * ((rand() / (double(RAND_MAX)) - 0.5) * static_cast<double>(difficulty) / static_cast<double>(Difficulty::Easy));
-    AcceleratingObject* obj = new AcceleratingObject(this, Position(posX, 0), size_x, size_y, true, Vector2(accelerationX, accelerationY), Vector2(0, velocityY));
-    entities.push_back(obj);
+    // AcceleratingObject* obj = new AcceleratingObject(this, Position(posX, 0), size_x, size_y, true, Vector2(accelerationX, accelerationY), Vector2(0, velocityY));
+    // entities.push_back(obj);
+
+    instantiate<AcceleratingObject>(Position(posX, 0), size_x, size_y, true, Vector2(accelerationX, accelerationY), Vector2(0, velocityY));
 }
 
 AcceleratingObject* GameSpace::test_spawn_falling_obj(Position position)
 {
-    AcceleratingObject* fallingObject = new AcceleratingObject(this, position, 3, 3);
+    AcceleratingObject* fallingObject = new AcceleratingObject(position, 3, 3);
     entities.push_back(fallingObject);
     return fallingObject;
 }
@@ -211,10 +213,16 @@ void GameSpace::reset(Difficulty difficulty, bool test_mode)
 
     set_difficulty(difficulty);
     this->test_mode = test_mode;
-    player = new Player(this, test_mode);
+    player = new Player(test_mode);
     entities.push_back(player);
     collision_detector.update(entities);
     game_timer.reset();
+}
+
+GameSpace *GameSpace::get_instance()
+{
+    static GameSpace gamespace;
+    return &gamespace;
 }
 
 CollisionCell::CollisionCell(int x, int y): x(x), y(y) {

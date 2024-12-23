@@ -81,7 +81,6 @@ class GameSpace {
     CollisionDetection collision_detector;
     long get_next_object_spawn_time();
     
-    // void update_screen();
     public:
         GameSpace(Difficulty difficulty = Difficulty::Easy, bool test_mode = false);
         ~GameSpace();
@@ -96,4 +95,12 @@ class GameSpace {
         void set_difficulty(Difficulty difficulty);
         void print(WINDOW* window);
         void reset(Difficulty difficulty, bool test_mode);
+
+        static GameSpace* get_instance();
+
+        template <typename T, typename... X>
+        static T* instantiate(X... args);
+
 };
+
+#include "game_space.tpp"
