@@ -2,7 +2,7 @@
 // #include "util.h"
 
 template <typename T, typename... X>
-inline T* GameSpace::instantiate(X... args)
+inline T* instantiate(X... args)
 {
     static_assert(std::is_base_of<GameObject, T>::value, "");
     T* obj = new T(args...);

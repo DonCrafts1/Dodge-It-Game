@@ -213,8 +213,7 @@ void GameSpace::reset(Difficulty difficulty, bool test_mode)
 
     set_difficulty(difficulty);
     this->test_mode = test_mode;
-    player = new Player(test_mode);
-    entities.push_back(player);
+    player = instantiate<Player>(test_mode);
     collision_detector.update(entities);
     game_timer.reset();
 }

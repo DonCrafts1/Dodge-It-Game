@@ -99,8 +99,10 @@ class GameSpace {
         static GameSpace* get_instance();
 
         template <typename T, typename... X>
-        static T* instantiate(X... args);
-
+        friend T* instantiate(X... args);
 };
+
+template <typename T, typename... X>
+T* instantiate(X... args);
 
 #include "game_space.tpp"
